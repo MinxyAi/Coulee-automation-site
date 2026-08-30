@@ -1,0 +1,409 @@
+<title>Coulee Automation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ink: #1B2129;
+    --ground: #EEF0E7;
+    --surface: #F8F9F3;
+    --surface-2: #E2E6D7;
+    --accent: #B9852E;
+    --accent-ink: #6B4A15;
+    --sage: #55684B;
+    --dusk: #33505F;
+    --line: rgba(27,33,41,0.15);
+    --line-strong: rgba(27,33,41,0.28);
+    --shadow: 0 10px 30px rgba(27,33,41,0.08);
+
+    --font-display: 'Bricolage Grotesque', 'Arial Narrow', system-ui, sans-serif;
+    --font-body: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #EDEFE6;
+      --ground: #14181D;
+      --surface: #1A2028;
+      --surface-2: #222A34;
+      --accent: #DDAC50;
+      --accent-ink: #F4DBA0;
+      --sage: #93AA84;
+      --dusk: #8FB4C9;
+      --line: rgba(237,239,230,0.14);
+      --line-strong: rgba(237,239,230,0.26);
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #EDEFE6;
+    --ground: #14181D;
+    --surface: #1A2028;
+    --surface-2: #222A34;
+    --accent: #DDAC50;
+    --accent-ink: #F4DBA0;
+    --sage: #93AA84;
+    --dusk: #8FB4C9;
+    --line: rgba(237,239,230,0.14);
+    --line-strong: rgba(237,239,230,0.26);
+    --shadow: 0 10px 30px rgba(0,0,0,0.35);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 700; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+  p { margin: 0; }
+  a { color: inherit; }
+  ::selection { background: var(--accent); color: var(--ink); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .mono { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.09em; }
+  .eyebrow { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.74rem; color: var(--accent-ink); font-weight: 500; }
+
+  /* ---------- nav ---------- */
+  .nav {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem;
+    padding: 1.05rem clamp(1.2rem, 4vw, 3rem);
+    background: color-mix(in srgb, var(--ground) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .wordmark { font-family: var(--font-mono); font-weight: 500; font-size: 0.86rem; letter-spacing: 0.08em; text-decoration: none; white-space: nowrap; }
+  .wordmark span { color: var(--accent-ink); }
+  .navlinks { display: flex; gap: clamp(0.9rem, 2vw, 1.6rem); flex-wrap: wrap; }
+  .navlinks a {
+    font-family: var(--font-mono); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.09em;
+    text-decoration: none; color: var(--ink); opacity: 0.68; padding-bottom: 3px; border-bottom: 1px solid transparent;
+  }
+  .navlinks a:hover { opacity: 1; }
+  .navlinks a[aria-current="page"] { opacity: 1; border-bottom-color: var(--accent); color: var(--accent-ink); }
+
+  /* ---------- layout shells ---------- */
+  main { display: block; }
+  .page { display: block; }
+  .page[hidden] { display: none !important; }
+  .band { padding: clamp(3rem, 7vw, 5.5rem) clamp(1.2rem, 4vw, 3rem); }
+  .band-surface { background: var(--surface); }
+  .band-deep { background: var(--surface-2); }
+  .band-ink { background: var(--ink); color: var(--ground); }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  .prose { max-width: 62ch; }
+  .prose p + p { margin-top: 1rem; }
+
+  .enter { animation: rise 0.6s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .enter { animation: none; } }
+
+  /* ---------- hero ---------- */
+  .hero { padding: clamp(3.5rem, 9vw, 6.5rem) clamp(1.2rem, 4vw, 3rem) 0; }
+  .hero .eyebrow { margin-bottom: 0.9rem; display: block; }
+  .hero h1 { font-size: clamp(2.3rem, 5.4vw, 4.1rem); line-height: 1.04; max-width: 16ch; }
+  .hero .sub { margin-top: 1.4rem; font-size: 1.12rem; color: color-mix(in srgb, var(--ink) 78%, transparent); }
+  .cta-row { margin-top: 2rem; display: flex; gap: 0.9rem; flex-wrap: wrap; }
+  .btn {
+    font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.07em;
+    text-decoration: none; padding: 0.85rem 1.3rem; border: 1px solid var(--line-strong); display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+  }
+  .btn-primary { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent-ink); }
+  @media (prefers-reduced-motion: no-preference) { .btn:hover { transform: translateY(-2px); } }
+
+  .ridge { display: block; width: 100%; height: clamp(90px, 16vw, 170px); margin-top: clamp(2.5rem, 6vw, 4rem); }
+
+  /* ---------- generic section header ---------- */
+  .page-head { padding: clamp(3rem, 7vw, 4.5rem) clamp(1.2rem, 4vw, 3rem) 1rem; }
+  .page-head h1 { font-size: clamp(2rem, 4.4vw, 3rem); max-width: 20ch; }
+  .page-head .sub { margin-top: 1rem; font-size: 1.05rem; max-width: 60ch; color: color-mix(in srgb, var(--ink) 78%, transparent); }
+
+  /* ---------- pillars / services ---------- */
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 2.2rem; }
+  .grid-3 > div { background: var(--surface); padding: 1.8rem 1.6rem; }
+  .band-ink .grid-3 { background: var(--line); border-color: var(--line); }
+  .band-ink .grid-3 > div { background: var(--ink); }
+  .pillar-label { font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; margin-bottom: 0.6rem; }
+  .pillar-text { font-size: 0.96rem; color: color-mix(in srgb, currentColor 78%, transparent); }
+
+  .service-block { display: grid; grid-template-columns: minmax(0,1fr); gap: 0.6rem; padding: 2.2rem 0; border-top: 1px solid var(--line); }
+  .service-block:first-of-type { border-top: none; }
+  .service-block h3 { font-size: 1.5rem; }
+  .service-block .prose { color: color-mix(in srgb, var(--ink) 80%, transparent); font-size: 1rem; }
+
+  /* ---------- work card ---------- */
+  .work-card {
+    border: 1px solid var(--line-strong); background: var(--surface); padding: clamp(1.6rem, 4vw, 2.6rem);
+    display: grid; gap: 1.1rem; margin-top: 2rem;
+  }
+  .work-card .tag { display: inline-block; padding: 0.3rem 0.6rem; border: 1px solid var(--line-strong); font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; width: fit-content; color: var(--sage); }
+  .work-card h3 { font-size: 1.7rem; }
+  .work-card .prose { font-size: 1rem; color: color-mix(in srgb, var(--ink) 80%, transparent); }
+  .work-more { margin-top: 1.6rem; font-size: 0.92rem; color: color-mix(in srgb, var(--ink) 70%, transparent); }
+
+  /* ---------- about ---------- */
+  .about-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 2rem; margin-top: 1rem; }
+  @media (min-width: 720px) { .about-grid { grid-template-columns: 1fr 1fr; } }
+  .stat-row { display: flex; gap: 2.4rem; margin-top: 2rem; flex-wrap: wrap; }
+  .stat-row div { border-left: 2px solid var(--accent); padding-left: 0.9rem; }
+  .stat-num { font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; display: block; }
+  .stat-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: color-mix(in srgb, var(--ink) 65%, transparent); }
+
+  /* ---------- field notes ---------- */
+  .note { padding: 2.2rem 0; border-top: 1px solid var(--line); }
+  .note:first-of-type { border-top: none; }
+  .note-date { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--sage); }
+  .note h3 { font-size: 1.5rem; margin-top: 0.5rem; }
+  .note .prose { margin-top: 0.8rem; font-size: 1rem; color: color-mix(in srgb, var(--ink) 82%, transparent); }
+
+  /* ---------- contact ---------- */
+  .contact-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 2.4rem; margin-top: 1.6rem; }
+  @media (min-width: 780px) { .contact-grid { grid-template-columns: 1.1fr 0.9fr; } }
+  .contact-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.1rem; }
+  .contact-list li { border-top: 1px solid var(--line); padding-top: 1.1rem; }
+  .contact-list .k { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--sage); display: block; margin-bottom: 0.3rem; }
+  .contact-list a { text-decoration: none; font-size: 1.05rem; border-bottom: 1px solid var(--line-strong); }
+  .contact-list a:hover { border-bottom-color: var(--accent); color: var(--accent-ink); }
+  .prompts { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.7rem; font-size: 0.95rem; }
+  .prompts li { padding-left: 1.1rem; position: relative; color: color-mix(in srgb, var(--ink) 82%, transparent); }
+  .prompts li::before { content: "—"; position: absolute; left: 0; color: var(--accent); }
+
+  /* ---------- footer ---------- */
+  footer { padding: 2.2rem clamp(1.2rem, 4vw, 3rem) 2.6rem; border-top: 1px solid var(--line); background: var(--surface); }
+  .foot-wrap { max-width: 1080px; margin: 0 auto; display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; align-items: center; }
+  .foot-wrap .mono { font-size: 0.7rem; color: color-mix(in srgb, var(--ink) 60%, transparent); }
+</style>
+
+<a class="wordmark" href="#home" style="position:absolute;top:1.1rem;left:1.2rem;opacity:0;pointer-events:none;">skip</a>
+
+<header class="nav">
+  <a class="wordmark" href="#home">COULEE <span>AUTOMATION</span></a>
+  <nav class="navlinks" id="navlinks" aria-label="Primary">
+    <a href="#home" data-route="home">Home</a>
+    <a href="#services" data-route="services">Services</a>
+    <a href="#work" data-route="work">Work</a>
+    <a href="#about" data-route="about">About</a>
+    <a href="#notes" data-route="notes">Field Notes</a>
+    <a href="#contact" data-route="contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ================= HOME ================= -->
+  <section class="page" id="page-home">
+    <div class="hero">
+      <span class="eyebrow">AI Consulting &middot; Southern Alberta</span>
+      <h1>We build the tools we'd actually want to use.</h1>
+      <p class="sub prose">Coulee Automation is a small, family-run studio in coulee country, Alberta — building AI-powered tools for the businesses around us, starting with our own.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#work">See what we've built</a>
+        <a class="btn btn-ghost" href="#contact">Start a project</a>
+      </div>
+      <svg class="ridge" viewBox="0 0 1200 170" preserveAspectRatio="none" aria-hidden="true">
+        <polygon points="0,170 0,95 120,70 260,110 420,55 600,100 760,60 920,115 1080,75 1200,100 1200,170" fill="var(--dusk)" opacity="0.35"></polygon>
+        <polygon points="0,170 0,130 160,105 340,140 520,95 700,135 880,100 1060,145 1200,120 1200,170" fill="var(--sage)" opacity="0.45"></polygon>
+        <polygon points="0,170 0,150 200,140 380,158 560,132 760,155 960,138 1200,152 1200,170" fill="var(--ink)" opacity="0.5"></polygon>
+      </svg>
+    </div>
+
+    <div class="band band-surface">
+      <div class="wrap">
+        <span class="eyebrow">How we work</span>
+        <div class="grid-3">
+          <div>
+            <div class="pillar-label">Build</div>
+            <p class="pillar-text">Focused tools built around one real job in your business — not a bloated platform.</p>
+          </div>
+          <div>
+            <div class="pillar-label">Consult</div>
+            <p class="pillar-text">An honest look at your workflow, then a short list of what's actually worth automating.</p>
+          </div>
+          <div>
+            <div class="pillar-label">Train</div>
+            <p class="pillar-text">Hands-on sessions with your team, working through your real tasks — not a slideshow.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="band band-ink">
+      <div class="wrap" style="display:grid;gap:1.4rem;">
+        <h2 style="font-size:clamp(1.5rem,3vw,2.1rem);max-width:26ch;">Built and running in our own business, before we ever offered it to anyone else's.</h2>
+        <p class="prose" style="color:color-mix(in srgb, var(--ground) 82%, transparent);">Field Report, our home inspection reporting tool, is the reason this studio exists — we needed it ourselves, so we built it. <a href="#work" style="color:var(--accent);text-decoration:underline;">See how it works &rarr;</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SERVICES ================= -->
+  <section class="page" id="page-services" hidden>
+    <div class="page-head">
+      <span class="eyebrow">What we do</span>
+      <h1>Three ways we help.</h1>
+      <p class="sub">No package tiers, no bundled hours you don't need — most engagements are one of these three, sized to the actual problem.</p>
+    </div>
+    <div class="band band-surface">
+      <div class="wrap" style="max-width:760px;">
+        <div class="service-block">
+          <h3>Build — custom software, built around how you actually work</h3>
+          <p class="prose">We design and build focused tools for a specific job in your business — not a bloated platform, not a dashboard nobody opens. Our own home inspection reporting app started as exactly this kind of project: a tool built to solve one real problem well, from photo capture through to a client-ready report.</p>
+        </div>
+        <div class="service-block">
+          <h3>Consult — finding where AI actually helps</h3>
+          <p class="prose">Most small businesses don't need "an AI strategy" — they need to know which two or three tasks are genuinely worth automating, and which aren't worth the trouble yet. We start with an honest look at your workflow, then hand you a short, realistic list of what's worth building or buying.</p>
+        </div>
+        <div class="service-block">
+          <h3>Train — getting your team comfortable with the tools you already have</h3>
+          <p class="prose">A new tool only pays off if people actually use it. We run hands-on sessions with your team, working through your real day-to-day tasks with the AI tools you've already got or are considering — not a generic slideshow about "the future of AI."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WORK ================= -->
+  <section class="page" id="page-work" hidden>
+    <div class="page-head">
+      <span class="eyebrow">What we've built</span>
+      <h1>Proof of work, not a pitch deck.</h1>
+      <p class="sub">We'd rather show you something real and running than talk in hypotheticals.</p>
+    </div>
+    <div class="band band-surface">
+      <div class="wrap" style="max-width:820px;">
+        <div class="work-card">
+          <span class="tag">In use &middot; in-house</span>
+          <h3>Field Report</h3>
+          <p class="prose">An AI-assisted home inspection reporting tool, built first for our own inspection business. A walkthrough — photos, dictated notes, room by room — becomes a structured, reviewed finding, then a polished, client-ready report and repair checklist. Every AI-drafted finding is reviewed and approved by the inspector before it ever reaches a client; nothing goes out unchecked.</p>
+          <p class="prose">We're now looking at whether it makes sense for other independent inspectors, too.</p>
+        </div>
+        <p class="work-more">Interested in something similar for your own business? That's exactly the kind of project we like taking on. <a href="#contact" style="color:var(--accent-ink);text-decoration:underline;">Get in touch &rarr;</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ABOUT ================= -->
+  <section class="page" id="page-about" hidden>
+    <div class="page-head">
+      <span class="eyebrow">Who we are</span>
+      <h1>A family business, built the way we'd want to hire one.</h1>
+    </div>
+    <div class="band band-surface">
+      <div class="wrap about-grid">
+        <div class="prose">
+          <p>Coulee Automation started the way most useful tools do: out of a problem we had ourselves. Founder Ashton Zintel kept running into the same frustration with off-the-shelf software — built for everyone, and so built for no one in particular — so we started building our own instead. It worked well enough that we figured other small businesses in southern Alberta might want the same thing.</p>
+          <p>We're run out of Lethbridge, in the coulee country along the Oldman River, and it's genuinely a family operation — Ashton alongside his parents, each bringing a different part of getting a small business right.</p>
+        </div>
+        <div>
+          <p class="prose">We're small on purpose. No account managers, no handoffs between "sales" and "the people who actually build it" — the person who builds your tool is the person you talk to, from the first conversation to the last bug fix.</p>
+          <div class="stat-row">
+            <div><span class="stat-num">2026</span><span class="stat-label">Founded</span></div>
+            <div><span class="stat-num">Lethbridge, AB</span><span class="stat-label">Based in</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FIELD NOTES ================= -->
+  <section class="page" id="page-notes" hidden>
+    <div class="page-head">
+      <span class="eyebrow">Field notes</span>
+      <h1>Notes from building small-business AI tools in the real world.</h1>
+      <p class="sub">Short, occasional write-ups — no hype, just what we're actually learning.</p>
+    </div>
+    <div class="band band-surface">
+      <div class="wrap" style="max-width:700px;">
+        <article class="note">
+          <span class="note-date mono">August 2026</span>
+          <h3>Why we built our own tool instead of buying one</h3>
+          <div class="prose">
+            <p>We looked at existing home inspection software before writing a line of code, and most of it does a lot — more than a two-person crew doing walkthroughs actually needs. The features we wanted (a fast way to capture a finding, an AI draft we could review and correct, a report that looked like it came from a real business) kept getting buried under features we didn't.</p>
+            <p>So we built the smaller version instead. It's not trying to be everything — it's trying to be exactly enough, and nothing gets into a client's hands without a person checking it first.</p>
+          </div>
+        </article>
+        <article class="note">
+          <span class="note-date mono">August 2026</span>
+          <h3>AI isn't magic — a practical starting point for small business owners</h3>
+          <div class="prose">
+            <p>The most useful question we've found for a small business isn't "how do we use AI?" It's much narrower: what's one task, this week, that eats real time and follows a pattern? Writing up the same kind of report over and over. Drafting the same kind of email. Sorting through the same kind of note.</p>
+            <p>Start there, with something small enough to actually finish and check by hand. The bigger ideas can wait until the small one is working and you trust it.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section class="page" id="page-contact" hidden>
+    <div class="page-head">
+      <span class="eyebrow">Get in touch</span>
+      <h1>Tell us what you're trying to solve.</h1>
+      <p class="sub">A couple of sentences about the actual problem gets us further than a formal proposal ever does.</p>
+    </div>
+    <div class="band band-surface">
+      <div class="wrap contact-grid">
+        <ul class="contact-list">
+          <li><span class="k">Email</span><a href="mailto:hello@couleeautomation.ca">hello@couleeautomation.ca</a></li>
+          <li><span class="k">Based in</span><span>Lethbridge, Alberta</span></li>
+        </ul>
+        <div>
+          <span class="eyebrow" style="display:block;margin-bottom:0.8rem;">Good things to include</span>
+          <ul class="prompts">
+            <li>What's slow, repetitive, or error-prone right now</li>
+            <li>Roughly how big your team is</li>
+            <li>Any timeline you're working against</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-wrap">
+    <span class="mono">Coulee Automation &middot; Lethbridge, Alberta</span>
+    <span class="mono">&copy; 2026</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var routes = ["home", "services", "work", "about", "notes", "contact"];
+    var links = document.querySelectorAll("#navlinks a");
+
+    function show(route) {
+      if (routes.indexOf(route) === -1) route = "home";
+      routes.forEach(function (r) {
+        var el = document.getElementById("page-" + r);
+        if (!el) return;
+        if (r === route) {
+          el.hidden = false;
+          el.classList.remove("enter");
+          void el.offsetWidth;
+          el.classList.add("enter");
+        } else {
+          el.hidden = true;
+        }
+      });
+      links.forEach(function (a) {
+        if (a.dataset.route === route) a.setAttribute("aria-current", "page");
+        else a.removeAttribute("aria-current");
+      });
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+
+    function routeFromHash() {
+      return (location.hash || "#home").replace("#", "");
+    }
+
+    window.addEventListener("hashchange", function () { show(routeFromHash()); });
+    show(routeFromHash());
+  })();
+</script>
