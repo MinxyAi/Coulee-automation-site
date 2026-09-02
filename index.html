@@ -1,4 +1,57 @@
 <title>Coulee Automation Inc.</title>
+<meta name="description" content="AI consulting and custom software for small businesses in southern Alberta — built by a family-run studio in Lethbridge, AB." />
+<link rel="canonical" href="https://couleeautomation.com/" />
+
+<!-- Favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+<!-- Open Graph / social preview -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://couleeautomation.com/" />
+<meta property="og:site_name" content="Coulee Automation Inc." />
+<meta property="og:locale" content="en_CA" />
+<meta property="og:title" content="Coulee Automation Inc. — AI Consulting, Southern Alberta" />
+<meta property="og:description" content="AI consulting and custom software for small businesses in southern Alberta — built by a family-run studio in Lethbridge, AB." />
+<meta property="og:image" content="https://couleeautomation.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Coulee Automation Inc. — AI Consulting, Southern Alberta" />
+
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Coulee Automation Inc. — AI Consulting, Southern Alberta" />
+<meta name="twitter:description" content="AI consulting and custom software for small businesses in southern Alberta — built by a family-run studio in Lethbridge, AB." />
+<meta name="twitter:image" content="https://couleeautomation.com/og-image.png" />
+
+<!-- Structured data — helps Google understand this is a local business.
+     No street address included on purpose (privacy) — add one here once
+     your Google Business Profile is set up, if you want it listed. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Coulee Automation Inc.",
+  "image": "https://couleeautomation.com/og-image.png",
+  "url": "https://couleeautomation.com/",
+  "description": "AI consulting and custom software for small businesses in southern Alberta — built by a family-run studio in Lethbridge, AB.",
+  "email": "ashton@couleeautomation.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Lethbridge",
+    "addressRegion": "AB",
+    "addressCountry": "CA"
+  },
+  "areaServed": "Southern Alberta",
+  "founder": {
+    "@type": "Person",
+    "name": "Ashton Zintel"
+  }
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -576,10 +629,20 @@
 <script>
   (function () {
     var routes = ["home", "services", "work", "about", "notes", "contact", "privacy"];
+    var titles = {
+      home: "Coulee Automation Inc. — AI Consulting, Southern Alberta",
+      services: "Services — Coulee Automation Inc.",
+      work: "Our Work — Coulee Automation Inc.",
+      about: "About — Coulee Automation Inc.",
+      notes: "Field Notes — Coulee Automation Inc.",
+      contact: "Contact — Coulee Automation Inc.",
+      privacy: "Privacy Policy — Coulee Automation Inc."
+    };
     var links = document.querySelectorAll("#navlinks a");
 
     function show(route) {
       if (routes.indexOf(route) === -1) route = "home";
+      document.title = titles[route] || titles.home;
       routes.forEach(function (r) {
         var el = document.getElementById("page-" + r);
         if (!el) return;
