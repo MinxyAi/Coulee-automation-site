@@ -247,6 +247,18 @@
   .calc-card .btn-primary { background: var(--calc-accent); border-color: var(--calc-accent); color: var(--calc-card-bg); box-shadow: 0 10px 28px color-mix(in srgb, var(--calc-accent) 55%, transparent); }
   .calc-card .btn-primary:hover { background: var(--hero-teal); border-color: var(--hero-teal); color: var(--calc-card-bg); box-shadow: 0 10px 28px color-mix(in srgb, var(--hero-teal) 55%, transparent); }
 
+  /* ---------- FAQ ---------- */
+  .faq-list { margin-top: 1.8rem; }
+  .faq-item { border-top: 1px solid var(--line); }
+  .faq-item:last-child { border-bottom: 1px solid var(--line); }
+  .faq-item summary { cursor: pointer; padding: 1.15rem 0; font-weight: 600; font-size: 1.05rem; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1.2rem; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; font-size: 1.5rem; line-height: 1; color: var(--accent); flex: none; }
+  .faq-item[open] summary::after { content: "\2212"; }
+  .faq-item .faq-a { padding: 0 0 1.4rem; max-width: 66ch; }
+  .faq-item .faq-a p { color: color-mix(in srgb, var(--ink) 82%, transparent); font-size: 0.98rem; line-height: 1.65; }
+  .faq-item .faq-a a { color: var(--accent-ink); }
+
   /* ---------- work card ---------- */
   .work-card {
     border: 1px solid var(--line-strong); border-top: 3px solid var(--accent); background: var(--surface); padding: clamp(1.6rem, 4vw, 2.6rem);
@@ -283,6 +295,19 @@
   .prompts { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.7rem; font-size: 0.95rem; }
   .prompts li { padding-left: 1.1rem; position: relative; color: color-mix(in srgb, var(--ink) 82%, transparent); }
   .prompts li::before { content: "—"; position: absolute; left: 0; color: var(--accent); }
+  .contact-side { display: grid; gap: 2.2rem; align-content: start; }
+  .contact-form { display: grid; gap: 1.1rem; }
+  .form-row { display: grid; gap: 0.4rem; }
+  .form-row label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--teal); }
+  .form-row label .opt { text-transform: none; letter-spacing: 0; font-family: var(--font-body, inherit); color: color-mix(in srgb, var(--ink) 55%, transparent); }
+  .form-row input, .form-row textarea { font: inherit; font-size: 0.95rem; padding: 0.75rem 0.9rem; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); width: 100%; box-sizing: border-box; }
+  .form-row input:focus, .form-row textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
+  .form-row textarea { resize: vertical; min-height: 120px; }
+  .contact-form .btn-primary { justify-self: start; }
+  .form-status { font-size: 0.85rem; margin: 0; min-height: 1.2em; }
+  .form-status.ok { color: var(--teal); }
+  .form-status.err { color: var(--accent-ink); }
+  .hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
   /* ---------- footer ---------- */
   footer { padding: 2.2rem clamp(1.2rem, 4vw, 3rem) 2.6rem; border-top: 1px solid var(--line); background: var(--surface); }
@@ -444,6 +469,45 @@
         </div>
       </div>
     </div>
+
+    <div class="band band-surface">
+      <div class="wrap" style="max-width:760px;">
+        <span class="eyebrow">Questions we hear a lot</span>
+        <h2 style="margin-top:0.9rem;font-size:clamp(1.4rem,2.8vw,1.9rem);max-width:24ch;">Straight answers, no sales pitch.</h2>
+        <p class="sub" style="margin-top:0.8rem;max-width:60ch;">AI is still new territory for a lot of small businesses, and being unsure about it is a completely reasonable place to start. Here's what we tell people who ask.</p>
+
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>What does this actually cost?</summary>
+            <div class="faq-a"><p>There's no fixed package price, because the honest answer depends on what you actually need — a two-week automation and a multi-month build cost very differently, and we'd rather scope to the real problem than sell you a bundle of hours you don't need. Pricing is always discussed upfront, in plain numbers, before any work starts, and sized to fit a small-business budget rather than an enterprise one. If something isn't worth the investment yet, we'll tell you that too.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>How long does a project take?</summary>
+            <div class="faq-a"><p>Most of what we build runs weeks, not months — a focused tool solving one real problem doesn't need a six-month timeline, and we don't pad estimates to sound more impressive. You'll get a realistic timeline before we start, and an update if anything changes along the way, rather than silence until a deadline slips.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Why a small, family-run studio instead of a bigger firm?</summary>
+            <div class="faq-a"><p>Because you're always talking to the person actually doing the work, not an account manager relaying questions to someone else. We stay small by choice — it means lower overhead, more attention on each project we take on, and no incentive to sell you more than you need. What a bigger firm offers in scale, we make up for in actually being invested in getting it right for you.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>We're hesitant about AI — will this really work for a business our size?</summary>
+            <div class="faq-a"><p>That hesitation is fair, and honestly a healthy instinct — AI is genuinely new territory for most small businesses, and a lot of the noise around it oversells what it can do. Our approach is to start small: one real, well-defined task, proven out before anything bigger gets discussed. If a tool doesn't earn its keep, we'll say so. We're not trying to sell you an "AI strategy" — we're trying to find the two or three places it actually saves your business real time.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Do we need to be technical to work with you?</summary>
+            <div class="faq-a"><p>No. Translating what's possible into plain language, and building something your team can actually use without a manual, is part of the job — it's also why training is one of our three core services, not an afterthought. If a tool needs a technical person standing behind it just to keep running, we haven't done our job.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>What happens to our data if we work together?</summary>
+            <div class="faq-a"><p>We only collect what you actually share with us to do the work. We don't run analytics, ad trackers, or profiling cookies — that's not a compliance checkbox, it's in our <a href="#privacy">Privacy Policy</a> because we mean it. If you ever want to know exactly what we hold, just ask.</p></div>
+          </details>
+        </div>
+
+        <div class="cta-row" style="margin-top:2rem;">
+          <a class="btn btn-primary" href="#contact">Still have a question? Ask us directly</a>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ================= WORK ================= -->
@@ -527,17 +591,42 @@
     </div>
     <div class="band band-surface">
       <div class="wrap contact-grid">
-        <ul class="contact-list">
-          <li><span class="k">Email</span><a href="mailto:ashton@couleeautomation.com">ashton@couleeautomation.com</a></li>
-          <li><span class="k">Based in</span><span>Lethbridge, Alberta</span></li>
-        </ul>
-        <div>
-          <span class="eyebrow" style="display:block;margin-bottom:0.8rem;">Good things to include</span>
-          <ul class="prompts">
-            <li>What's slow, repetitive, or error-prone right now</li>
-            <li>Roughly how big your team is</li>
-            <li>Any timeline you're working against</li>
+        <form id="couleeContactForm" class="contact-form" action="https://formspree.io/f/xoeqdwwz" method="POST">
+          <div class="form-row">
+            <label for="cfName">Name</label>
+            <input type="text" id="cfName" name="name" autocomplete="name" required />
+          </div>
+          <div class="form-row">
+            <label for="cfEmail">Email</label>
+            <input type="email" id="cfEmail" name="email" autocomplete="email" required />
+          </div>
+          <div class="form-row">
+            <label for="cfCompany">Company <span class="opt">(optional)</span></label>
+            <input type="text" id="cfCompany" name="company" autocomplete="organization" />
+          </div>
+          <div class="form-row">
+            <label for="cfMessage">What are you trying to solve?</label>
+            <textarea id="cfMessage" name="message" required></textarea>
+          </div>
+          <!-- Honeypot: Formspree silently discards any submission where this is filled in. Real visitors never see or fill it. -->
+          <input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <input type="hidden" name="_subject" value="New inquiry — couleeautomation.com" />
+          <button class="btn btn-primary" type="submit">Send message</button>
+          <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+        </form>
+        <div class="contact-side">
+          <ul class="contact-list">
+            <li><span class="k">Email</span><a href="mailto:ashton@couleeautomation.com">ashton@couleeautomation.com</a></li>
+            <li><span class="k">Based in</span><span>Lethbridge, Alberta</span></li>
           </ul>
+          <div>
+            <span class="eyebrow" style="display:block;margin-bottom:0.8rem;">Good things to include</span>
+            <ul class="prompts">
+              <li>What's slow, repetitive, or error-prone right now</li>
+              <li>Roughly how big your team is</li>
+              <li>Any timeline you're working against</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -711,5 +800,64 @@
       el.addEventListener("input", recalc);
     });
     recalc();
+  })();
+
+  // ---- contact form (Formspree) ----
+  (function () {
+    var form = document.getElementById("couleeContactForm");
+    if (!form) return;
+    var status = document.getElementById("formStatus");
+    var submitBtn = form.querySelector('button[type="submit"]');
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      var endpoint = form.getAttribute("action") || "";
+      if (endpoint.indexOf("YOUR_FORM_ID") !== -1) {
+        status.textContent = "This form isn't connected yet — email ashton@couleeautomation.com directly for now.";
+        status.className = "form-status err";
+        return;
+      }
+
+      status.textContent = "";
+      status.className = "form-status";
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending…";
+
+      fetch(endpoint, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
+      })
+        .then(function (res) {
+          if (res.ok) {
+            form.reset();
+            status.textContent = "Thanks — that's sent. We'll get back to you soon.";
+            status.className = "form-status ok";
+            return;
+          }
+          return res
+            .json()
+            .catch(function () {
+              return null;
+            })
+            .then(function (data) {
+              var msg =
+                data && data.errors && data.errors.length
+                  ? data.errors.map(function (er) { return er.message; }).join(", ")
+                  : "Something went wrong sending that.";
+              status.textContent = msg + " You can also email ashton@couleeautomation.com directly.";
+              status.className = "form-status err";
+            });
+        })
+        .catch(function () {
+          status.textContent = "Couldn't send that — please email ashton@couleeautomation.com directly.";
+          status.className = "form-status err";
+        })
+        .finally(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Send message";
+        });
+    });
   })();
 </script>
